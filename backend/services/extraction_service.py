@@ -2,6 +2,7 @@ import os
 import json
 from google import genai
 from google.genai import types
+from langsmith import traceable
 from models import CallExtraction
 
 class ExtractionService:
@@ -13,6 +14,7 @@ class ExtractionService:
             self.client = None
             print("[WARN] GEMINI_API_KEY not found. ExtractionService will fail.")
 
+    @traceable(name="transcript-full-extraction", run_type="chain")
     def extract_structured_data(self, transcript_text: str) -> CallExtraction:
         if not self.client:
             raise ValueError("GEMINI_API_KEY is not configured.")

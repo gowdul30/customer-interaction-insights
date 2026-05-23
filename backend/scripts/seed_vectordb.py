@@ -43,13 +43,18 @@ def main():
     existing_count = vectorstore._collection.count()
     if existing_count > 0:
         print(f"[INFO] ChromaDB already has {existing_count} documents.")
-        response = input("Do you want to clear and re-seed? (y/N): ").strip().lower()
-        if response == 'y':
+        force = "--force" in sys.argv or os.environ.get("FORCE_SEED") == "true" or not sys.stdin.isatty()
+        if force:
             vectorstore._collection.delete(where={})
-            print("[INFO] Cleared existing documents.")
+            print("[INFO] Cleared existing documents (forced re-seed).")
         else:
-            print("[SKIP] Keeping existing data. Exiting.")
-            return
+            response = input("Do you want to clear and re-seed? (y/N): ").strip().lower()
+            if response == 'y':
+                vectorstore._collection.delete(where={})
+                print("[INFO] Cleared existing documents.")
+            else:
+                print("[SKIP] Keeping existing data. Exiting.")
+                return
     
     # Build documents for embedding
     documents = []

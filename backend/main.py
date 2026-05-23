@@ -1,6 +1,9 @@
 """FastAPI main application for Customer Interaction Insights."""
-import json
 import os
+from dotenv import load_dotenv
+load_dotenv()  # Load .env before any other imports that read env vars
+
+import json
 import asyncio
 import random
 from datetime import datetime
@@ -78,9 +81,20 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Customer Interaction Insights API", version="1.0.0", lifespan=lifespan)
 
+# CORS: allow local dev + production frontend URL
+_cors_origins = [
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+_frontend_url = os.environ.get("FRONTEND_URL")
+if _frontend_url:
+    _cors_origins.append(_frontend_url)
+else:
+    _cors_origins.append("*")  # Fallback for local dev
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -104,6 +118,13 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
     client_detected: Optional[str] = None
+
+
+# === Health Check (for Render / load balancer) ===
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "calls_loaded": len(CALLS)}
 
 
 # === Routes ===
@@ -234,4 +255,5 @@ async def chat(req: ChatRequest):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)

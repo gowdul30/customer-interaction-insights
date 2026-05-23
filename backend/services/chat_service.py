@@ -66,7 +66,10 @@ class ChatService:
         rag_chain = create_retrieval_chain(retriever, question_answer_chain)
 
         try:
-            response = rag_chain.invoke({"input": message})
+            response = rag_chain.invoke(
+                {"input": message},
+                config={"run_name": f"RAG-Chat-{detected_client or 'general'}"}
+            )
             return response["answer"]
         except Exception as e:
             print(f"RAG Error: {e}")

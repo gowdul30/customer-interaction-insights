@@ -2,6 +2,7 @@ import os
 import json
 from google import genai
 from google.genai import types
+from langsmith import traceable
 from agents.state import AgentState
 from models import RootCause, Escalation, CustomerTone, ActionItem, AgentPerformance
 
@@ -11,6 +12,7 @@ def get_gemini_client():
         raise ValueError("GEMINI_API_KEY is not set.")
     return genai.Client(api_key=api_key)
 
+@traceable(name="gemini-structured-extraction", run_type="llm")
 def _invoke_structured_agent(prompt: str, schema_class, transcript: str):
     client = get_gemini_client()
     try:
@@ -29,24 +31,28 @@ def _invoke_structured_agent(prompt: str, schema_class, transcript: str):
         print(f"[ERROR] Specialist agent failed: {e}")
         return None
 
+@traceable(name="root-cause-specialist", run_type="chain")
 def root_cause_node(state: AgentState) -> AgentState:
     print("[Agent] Running Root Cause Specialist...")
     prompt = "You are the Root Cause Specialist. Analyze the transcript and determine the primary category of the issue and a specific description. Assign a confidence score."
     result = _invoke_structured_agent(prompt, RootCause, state["transcript_text"])
     return {"root_cause_analysis": result}
 
+@traceable(name="escalation-predictor", run_type="chain")
 def escalation_node(state: AgentState) -> AgentState:
     print("[Agent] Running Escalation Predictor...")
     prompt = "You are the Escalation Predictor. Determine if the call was escalated. Extract any specific phrases signaling escalation risk. Calculate a risk score for future escalation based on the customer's frustration level and agent handling."
     result = _invoke_structured_agent(prompt, Escalation, state["transcript_text"])
     return {"escalation_analysis": result}
 
+@traceable(name="sentiment-deep-dive", run_type="chain")
 def sentiment_node(state: AgentState) -> AgentState:
     print("[Agent] Running Sentiment Deep-Dive...")
     prompt = "You are the Sentiment Deep-Dive Agent. Evaluate the overall tone, calculate a specific sentiment score (-1.0 to 1.0), and count the exact number of times the customer exhibited a spike in frustration."
     result = _invoke_structured_agent(prompt, CustomerTone, state["transcript_text"])
     return {"sentiment_analysis": result}
 
+@traceable(name="action-item-specialist", run_type="chain")
 def action_item_node(state: AgentState) -> AgentState:
     print("[Agent] Running Action Item Specialist...")
     # For lists, we define a wrapper schema inline
@@ -59,6 +65,7 @@ def action_item_node(state: AgentState) -> AgentState:
     result = _invoke_structured_agent(prompt, ActionItemWrapper, state["transcript_text"])
     return {"action_items_analysis": result.get("items", []) if result else []}
 
+@traceable(name="qa-specialist", run_type="chain")
 def qa_node(state: AgentState) -> AgentState:
     print("[Agent] Running QA Specialist...")
     prompt = "You are the Quality Assurance Specialist. Score the agent's empathy and professionalism. Check if they attempted first call resolution. Identify any missed opportunities to resolve the issue better or de-escalate."

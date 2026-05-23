@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, NavLink, useSearchParams } from 'react-router-dom';
+import { HashRouter, Routes, Route, NavLink, useSearchParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import {
   LayoutDashboard, Search, AlertTriangle, SmilePlus,
@@ -91,9 +91,9 @@ function AppContent() {
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <AppContent />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
