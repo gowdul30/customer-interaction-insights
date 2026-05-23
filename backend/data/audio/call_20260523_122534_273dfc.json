@@ -1,0 +1,50 @@
+{
+  "topic": "International Roaming Inquiry",
+  "client": "T-Mobile",
+  "messages": [
+    {
+      "speaker": "Agent",
+      "text": "Thank you for calling T-Mobile, my name is Sarah. How may I help you today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hi Sarah, I'm calling because I'm planning a trip to Europe next month and I wanted to inquire about international roaming rates. I have the Magenta MAX plan, if that helps."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Oh, that's fantastic! With Magenta MAX, you're actually in a great position for international travel. Most of our plans, especially Magenta MAX, include unlimited talk, text, and data in over 215 countries and destinations."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Oh, really? That's, that's great news! I'm going to be in France, Italy, and a bit of Germany. So, that would cover those countries?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "Absolutely, all three of those countries are included in our 215+ destinations. You'll get unlimited texts and data at up to 256 Kbps, which is good for emails, messaging apps, and light browsing. Calls are typically 25 cents per minute from those locations to anywhere in the world."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Okay, 25 cents a minute, got it. And for the data, if I needed faster speeds, is there an option to upgrade?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "Yes, there certainly is! We have International Pass options. You can add a high-speed data pass for 5GB at $35 for 10 days, or 15GB for $50 for 30 days. You can activate these directly from your phone once you arrive, or through the T-Mobile app or website before you leave."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Perfect. That sounds super convenient. So, really, I don't need to do anything special before I go, just make sure roaming is on, and if I want faster data, I can add a pass."
+    },
+    {
+      "speaker": "Agent",
+      "text": "That's exactly right! Just ensure your device's data roaming is enabled in your settings, and you'll automatically connect when you land. No need to purchase anything upfront unless you want that peace of mind. Is there anything else I can assist you with regarding your trip?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "No, that was super helpful, Sarah. Thank you so much for clarifying everything!"
+    },
+    {
+      "speaker": "Agent",
+      "text": "You're very welcome! Enjoy your trip to Europe. And remember, if you have any questions while you're there, you can always reach us 24/7. Have a wonderful day!"
+    }
+  ]
+}

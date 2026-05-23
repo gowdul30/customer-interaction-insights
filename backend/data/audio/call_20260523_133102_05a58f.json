@@ -1,0 +1,58 @@
+{
+  "topic": "Internet Connectivity Issue",
+  "client": "Comcast",
+  "messages": [
+    {
+      "speaker": "Agent",
+      "text": "Thank you for calling Comcast Xfinity, my name is Sarah. How may I help you today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hi Sarah, yeah, I'm calling because my internet... it just keeps cutting out. Like, every 10, 15 minutes, it just drops completely, then comes back after a minute or two. It's really frustrating."
+    },
+    {
+      "speaker": "Agent",
+      "text": "I understand how frustrating that can be, especially when you're trying to work or stream something. Let me pull up your account to see what's happening. Can I get your full name and the service address, please?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Sure. It's Michael Thompson, and the address is 123 Maple Drive, Springfield, 90210."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Thank you, Mr. Thompson. I've located your account. Before we dive deeper, can you describe the lights on your modem for me? Specifically, the upstream, downstream, and internet lights."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Uh, okay. Let me see... So, the power light is solid. Downstream and upstream are both blinking green, and the internet light, that one's usually solid, but right now it's off. No, wait, it just came back on, solid green. See? It just did it again!"
+    },
+    {
+      "speaker": "Agent",
+      "text": "Alright, I see what's happening. It sounds like your modem might be having trouble maintaining a stable connection. The quickest way to potentially resolve this is to perform a power cycle on your modem. Have you tried unplugging it and plugging it back in?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "I... I don't think I've done it recently. I mean, I've unplugged it for other reasons, but not specifically for this. How long should I leave it unplugged?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "Please unplug the power cord from the back of the modem, wait for about 30 seconds, and then plug it back in. It might take a few minutes for all the lights to come back on and stabilize. Let me know when you've done that and what the lights look like."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Okay, just did it. All the lights are off now... (pause) ...Okay, power is solid, downstream and upstream are blinking, and now the internet light is blinking too... (another pause) ...Alright, the internet light just went solid green. All the lights are solid now."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Excellent. Could you try accessing a website or doing a quick search for me to confirm your connection is stable?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Yeah, let me check... (typing sounds) ...Okay, Google loaded instantly. Let me try YouTube... Yep, looks good! It feels a lot faster already, actually. Wow, thank you, Sarah, that was quick!"
+    },
+    {
+      "speaker": "Agent",
+      "text": "You're very welcome, Mr. Thompson. It seems the power cycle did the trick. Sometimes, a simple reboot is all it takes to refresh the connection. I'll make a note of this on your account. Is there anything else I can assist you with today?"
+    }
+  ]
+}

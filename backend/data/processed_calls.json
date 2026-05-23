@@ -1,0 +1,112 @@
+[
+  {
+    "call_id": "call_20260523_104031",
+    "client": "Spark Communications",
+    "call_metadata": {
+      "date": "2026-05-23",
+      "duration_seconds": 231.0,
+      "agent_id": "AGT-101",
+      "agent_name": "Alex",
+      "issue_resolved": true
+    },
+    "transcript_summary": "A customer interaction processed by the Agentic AI pipeline.",
+    "nlp_analysis": {
+      "root_cause": {
+        "category": "unknown",
+        "detected_cause": "Failed to extract"
+      },
+      "escalation": {
+        "escalated": false,
+        "escalation_signals": [
+          "I'm pretty annoyed about it.",
+          "This isn't what I signed up for.",
+          "Ugh, fine.",
+          "This happens every few months, honestly, with unexpected charges creeping up.",
+          "A discount expired? Nobody told me that!",
+          "Why wasn't I notified?",
+          "This is ridiculous.",
+          "I don't want this to be a recurring problem.",
+          "please, *please* make sure I get a proper notification if anything changes again.",
+          "I'm tired of these surprises."
+        ]
+      },
+      "customer_tone": {
+        "overall": "neutral",
+        "sentiment_score": 0.0
+      },
+      "callback_intent": {
+        "callback_requested": false
+      }
+    },
+    "feedback": {
+      "post_call_survey_completed": true,
+      "csat_score": 5
+    }
+  },
+  {
+    "call_id": "call_20260523_122217_c2d285",
+    "client": "Verizon",
+    "call_metadata": {
+      "date": "2026-05-23",
+      "duration_seconds": 221.0,
+      "agent_id": "AGT-101",
+      "agent_name": "Alex",
+      "issue_resolved": true
+    },
+    "transcript_summary": "A customer interaction processed by the Agentic AI pipeline.",
+    "nlp_analysis": {
+      "root_cause": {
+        "category": "unknown",
+        "detected_cause": "Failed to extract"
+      },
+      "escalation": {
+        "escalated": false,
+        "escalation_signals": []
+      },
+      "customer_tone": {
+        "overall": "neutral",
+        "sentiment_score": 0.0
+      },
+      "callback_intent": {
+        "callback_requested": false
+      }
+    },
+    "feedback": {
+      "post_call_survey_completed": true,
+      "csat_score": 5
+    }
+  },
+  {
+    "call_id": "call_20260523_122322_878481",
+    "client": "Wells Fargo",
+    "call_metadata": {
+      "date": "2026-05-23",
+      "duration_seconds": 215.0,
+      "agent_id": "AGT-101",
+      "agent_name": "Alex",
+      "issue_resolved": true
+    },
+    "transcript_summary": "A customer interaction processed by the Agentic AI pipeline.",
+    "nlp_analysis": {
+      "root_cause": {
+        "category": "unknown",
+        "detected_cause": "Failed to extract"
+      },
+      "escalation": {
+        "escalated": false,
+        "escalation_signals": []
+      },
+      "customer_tone": {
+        "overall": "neutral",
+        "sentiment_score": 0.0
+      },
+      "callback_intent": {
+        "callback_requested": false
+      }
+    },
+    "feedback": {
+      "post_call_survey_completed": true,
+      "csat_score": 5
+    }
+  }
+]

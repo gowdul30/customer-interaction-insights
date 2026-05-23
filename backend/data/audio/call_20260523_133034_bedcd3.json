@@ -1,0 +1,50 @@
+{
+  "topic": "Fraudulent Credit Card Transaction Dispute",
+  "client": "Wells Fargo",
+  "messages": [
+    {
+      "speaker": "Agent",
+      "text": "Thank you for calling Wells Fargo, my name is Sarah. How can I assist you today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hi Sarah, um, I'm a bit worried. I just checked my credit card statement online and there's a charge I don't recognize. I definitely didn't make it."
+    },
+    {
+      "speaker": "Agent",
+      "text": "I understand that can be concerning. Let's take a look at that for you. To begin, can I please have your full name and the last four digits of the credit card in question?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Yes, it's [Customer Name] and the card ends in 4321. The charge is for $125.50 from something called 'Global Online Services' on October 26th. I've never heard of them."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Thank you, [Customer Name]. I'm pulling up your account now. I see the transaction you're referring to. Since you confirm this was not authorized, we will classify it as a fraudulent charge and begin the dispute process immediately. As a first step, I'll need to cancel this card to prevent any further unauthorized activity."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Oh, okay. Will I get a new card automatically? And, um, will I be responsible for that $125.50? I'm really anxious about this impacting my credit or, you know, my money."
+    },
+    {
+      "speaker": "Agent",
+      "text": "That's a very good question, and please don't worry. Under Wells Fargo's Zero Liability policy, you will not be held responsible for unauthorized transactions reported promptly. We will mail a new card to your address on file, which should arrive within 7-10 business days. Regarding the charge, once the dispute is filed, the amount will typically be credited back to your account within 10 business days while the investigation takes place."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Oh, that's a huge relief. So, I don't need to do anything else right now? Just wait for the new card and the credit?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "That's correct. I've successfully initiated the dispute for the Global Online Services charge of $125.50 and have cancelled your current card. Your new card will be mailed out today. You'll also receive a letter in the mail confirming the dispute details. For your records, your dispute reference number is WF58763B. Is there anything else I can assist you with today, [Customer Name]?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "No, I think that covers everything. Thank you so much, Sarah. I really appreciate your help and making this easy. I was really stressed."
+    },
+    {
+      "speaker": "Agent",
+      "text": "You're very welcome. We're here to help. If you have any further questions or concerns once you receive your new card or the dispute letter, please don't hesitate to call us back. Thank you for choosing Wells Fargo, and have a good day."
+    }
+  ]
+}

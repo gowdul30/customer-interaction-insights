@@ -1,0 +1,50 @@
+{
+  "topic": "International Roaming Inquiry",
+  "client": "T-Mobile",
+  "messages": [
+    {
+      "speaker": "Agent",
+      "text": "Thank you for calling T-Mobile, my name is Sarah. How can I help you today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hi Sarah. I'm calling because I'm planning a trip to Europe soon, and I wanted to ask about international roaming rates. Specifically, for data and calls."
+    },
+    {
+      "speaker": "Agent",
+      "text": "That's exciting! Europe is wonderful. To give you the most accurate information, could you tell me which specific countries you'll be visiting?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Sure, I'll be in France and Italy for the most part. Maybe a quick stop in Switzerland."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Excellent! For France and Italy, you'll be covered under our Simple Global feature. That means you'll automatically get unlimited data and texting at no extra cost, though the data speed will be at 2G speeds. Calls are 25 cents per minute."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Oh, that's fantastic! I thought I'd have to buy a special pass or something. And for Switzerland?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "Switzerland is also included in Simple Global, so the same rates apply: unlimited 2G data, unlimited texting, and calls at 25 cents per minute. You don't need to do anything extra before you leave; it just works automatically when you land."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Wow, that's really convenient. So, I just make sure data roaming is enabled on my phone, and I'm good to go?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "Exactly right! Just enable data roaming in your phone's settings, and you're all set. Is there anything else I can clarify about your international service today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "No, that was super clear and much easier than I expected. Thank you so much, Sarah!"
+    },
+    {
+      "speaker": "Agent",
+      "text": "You're very welcome! Have an absolutely wonderful trip to Europe. Please don't hesitate to call if anything else comes up. Goodbye for now!"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "topic": "Internet Connectivity Issue",
+  "client": "Comcast",
+  "messages": [
+    {
+      "speaker": "Agent",
+      "text": "Thank you for calling Comcast Xfinity Technical Support, my name is Sarah. How can I assist you today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hi Sarah, um, my internet keeps dropping. Like, completely cutting out for a few minutes and then coming back. It's really annoying, it's been happening for the past two days."
+    },
+    {
+      "speaker": "Agent",
+      "text": "I understand that's incredibly frustrating, especially when you're trying to work or stream. Let me pull up your account first. Can I get the full name and service address on the account, please?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Sure, it's Mark Johnson, and the address is 123 Main Street, Anytown, CA 90210."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Thank you, Mr. Johnson. I see your account here. Before we go any further, have you tried power cycling your modem and router yet? Unplugging them for about 60 seconds and then plugging them back in?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Uh, no, I haven't actually. I just assumed it was on your end. It's a brand new modem you guys just sent me last month."
+    },
+    {
+      "speaker": "Agent",
+      "text": "It's always a good first step, even with new equipment, as a quick reset can often clear up minor connectivity glitches. Would you mind giving that a try for me now? I'll wait on the line."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Okay, alright. I'm unplugging it now... Count to sixty, right? Okay, plugging it back in. It's blinking... Oh, the lights are solid now. Looks like it reconnected."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Excellent. Could you please try accessing a website or two to confirm the connection is stable?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Yep, Google works, YouTube is loading... Okay, it seems to be working perfectly right now. Hopefully, it stays that way."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Great! A simple modem reset often resolves intermittent drops. I'll monitor your connection for the next 24 hours from our end, just to be sure. If you experience any further issues, please don't hesitate to call us back. Is there anything else I can assist you with today, Mr. Johnson?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "No, I think that's it for now. Thanks, Sarah."
+    }
+  ]
+}

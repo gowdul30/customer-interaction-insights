@@ -1,0 +1,58 @@
+{
+  "topic": "Service Cancellation - High Cost",
+  "client": "AT&T",
+  "messages": [
+    {
+      "speaker": "Agent",
+      "text": "Thank you for calling AT&T, my name is Sarah. How can I assist you today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hi Sarah. Yeah, I'm calling because... well, I need to cancel my service. My internet and TV, both."
+    },
+    {
+      "speaker": "Agent",
+      "text": "I understand you're looking to cancel your AT&T services. Could you tell me a little bit about why you're considering this?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Honestly? It's just too expensive. My bill keeps creeping up, and I just can't justify the cost anymore. I've been a customer for years, but it's just gotten out of hand."
+    },
+    {
+      "speaker": "Agent",
+      "text": "I'm really sorry to hear that you feel our services are too expensive, especially after being with us for so long. We value your loyalty, and I'd love to see if there's anything we can do to keep you with AT&T. Let me pull up your account... Okay, I see your current package. What if I could offer you a loyalty discount of $30 off your current bundle for the next 12 months? That would bring your monthly bill down significantly."
+    },
+    {
+      "speaker": "Customer",
+      "text": "Hmm, $30 off... I appreciate that, Sarah, I really do. But I've actually already looked at some other providers, and I can get a pretty similar package for quite a bit less, even with that discount. It's just... I'm trying to cut costs wherever I can, and this is a big one. I think I'm set on canceling."
+    },
+    {
+      "speaker": "Agent",
+      "text": "I understand. I'm truly sorry we couldn't find a solution that works for you financially. Just to confirm, are you certain you'd like to proceed with canceling both your AT&T Internet and TV services today?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Yes, I am. I've thought about it a lot, and it's the right decision for me right now."
+    },
+    {
+      "speaker": "Agent",
+      "text": "Alright. I've processed your request. Your services will be disconnected on [Date - typically end of current billing cycle]. You'll receive a final bill within 7-10 business days. Do you have any equipment that needs to be returned?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "Yes, I have the internet modem and the TV box. What do I do with those?"
+    },
+    {
+      "speaker": "Agent",
+      "text": "You'll receive a pre-paid return label in the mail, or you can take the equipment to any UPS store and they can pack and ship it back for you at no charge. Please ensure all equipment is returned within 21 days to avoid any unreturned equipment fees. Is there anything else I can help you with today regarding your AT&T account?"
+    },
+    {
+      "speaker": "Customer",
+      "text": "No, I think that's everything. Thank you, Sarah."
+    },
+    {
+      "speaker": "Agent",
+      "text": "You're welcome. Thank you for being a loyal AT&T customer, and we wish you all the best. Have a good day."
+    }
+  ]
+}
