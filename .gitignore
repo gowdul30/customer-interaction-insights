@@ -1,0 +1,35 @@
+# Environment files (sensitive keys)
+.env
+.env.local
+.env.production
+.env.production.local
+.env.development.local
+.env.test.local
+backend/.env
+frontend/.env.production
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+venv/
+ENV/
+env/
+
+# Database / Vector DB local state
+backend/data/chroma_db/
+
+# IDE / System
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
