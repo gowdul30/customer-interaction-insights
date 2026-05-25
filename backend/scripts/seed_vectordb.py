@@ -1,6 +1,6 @@
 """
 Seed the ChromaDB vector database with existing call data from calls.json.
-Uses local HuggingFace embeddings (all-MiniLM-L6-v2) — no API calls required.
+Uses Google Generative AI embeddings (free API) — lightweight, no local model needed.
 """
 import os
 import sys
@@ -9,8 +9,11 @@ import json
 # Add backend to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.documents import Document
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,14 +26,22 @@ def main():
     print(f"   Source: {DATA_PATH}")
     print(f"   Target: {CHROMA_DIR}\n")
     
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        print("[ERROR] GEMINI_API_KEY not set. Cannot seed vector DB without embeddings.")
+        sys.exit(1)
+    
     # Load calls
     with open(DATA_PATH, "r") as f:
         calls = json.load(f)
     print(f"[INFO] Loaded {len(calls)} calls from dataset.")
     
-    # Initialize local embeddings (runs on CPU, no API key needed)
-    print("[INFO] Loading HuggingFace embedding model (all-MiniLM-L6-v2)...")
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    # Initialize Google embedding API (lightweight, no torch/local model needed)
+    print("[INFO] Using Google Generative AI embeddings (models/text-embedding-004)...")
+    embeddings = GoogleGenerativeAIEmbeddings(
+        model="models/text-embedding-004",
+        google_api_key=api_key,
+    )
     
     # Initialize Chroma
     vectorstore = Chroma(
@@ -82,15 +93,19 @@ def main():
         
         documents.append(Document(page_content=text, metadata=metadata))
     
-    # Batch embed in chunks to avoid memory issues
-    BATCH_SIZE = 50
+    # Batch embed in chunks to avoid rate limits
+    BATCH_SIZE = 20
     total_batches = (len(documents) + BATCH_SIZE - 1) // BATCH_SIZE
     
+    import time
     for i in range(0, len(documents), BATCH_SIZE):
         batch = documents[i:i + BATCH_SIZE]
         batch_num = (i // BATCH_SIZE) + 1
         print(f"[{batch_num}/{total_batches}] Embedding batch of {len(batch)} documents...")
         vectorstore.add_documents(batch)
+        # Small delay to respect Google API rate limits
+        if batch_num < total_batches:
+            time.sleep(1)
     
     final_count = vectorstore._collection.count()
     print(f"\n✅ Done! ChromaDB now contains {final_count} embedded documents.")

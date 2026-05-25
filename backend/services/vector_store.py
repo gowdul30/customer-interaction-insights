@@ -2,7 +2,7 @@ import os
 import json
 # pyrefly: ignore [missing-import]
 from langchain_chroma import Chroma
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_core.documents import Document
 from models import CallExtraction
 
@@ -12,15 +12,28 @@ class VectorStoreService:
     def __init__(self, persist_directory: str = None):
         self.persist_directory = persist_directory or os.path.join(BASE_DIR, "data", "chroma_db")
         
-        # We use local open-source HuggingFace embeddings to avoid API rate limits
-        self.embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        # Use Google's free embedding API instead of local HuggingFace model.
+        # This avoids loading torch + sentence-transformers (~400MB RAM)
+        # which exceeds Render's free tier 512MB limit.
+        api_key = os.environ.get("GEMINI_API_KEY")
+        if api_key:
+            self.embeddings = GoogleGenerativeAIEmbeddings(
+                model="models/text-embedding-004",
+                google_api_key=api_key,
+            )
+        else:
+            self.embeddings = None
+            print("[WARN] GEMINI_API_KEY not set. VectorStoreService embeddings unavailable.")
             
         # Initialize Chroma
-        self.vectorstore = Chroma(
-            collection_name="customer_calls",
-            embedding_function=self.embeddings,
-            persist_directory=self.persist_directory
-        )
+        if self.embeddings:
+            self.vectorstore = Chroma(
+                collection_name="customer_calls",
+                embedding_function=self.embeddings,
+                persist_directory=self.persist_directory
+            )
+        else:
+            self.vectorstore = None
 
     def embed_and_store(self, call_data: CallExtraction, raw_transcript: str):
         if not self.embeddings:

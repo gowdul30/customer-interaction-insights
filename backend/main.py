@@ -16,21 +16,40 @@ from contextlib import asynccontextmanager
 
 from services.analytics_service import AnalyticsService
 from services.chat_service import ChatService
+from services.db import DatabaseService
+from services.vector_store import VectorStoreService
+from agents.orchestrator import create_agentic_pipeline
+from models import CallExtraction
 import data.generate_data as generator
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Load call data — always use the rich 500+ record dataset
 DATA_PATH = os.path.join(BASE_DIR, "data", "calls.json")
-if not os.path.exists(DATA_PATH):
-    raise FileNotFoundError(f"Primary dataset not found at {DATA_PATH}")
 
-with open(DATA_PATH, "r") as f:
-    CALLS = json.load(f)
-print(f"[INFO] Loaded {len(CALLS)} call records from {DATA_PATH}")
+# Initialize persistent database service (MongoDB)
+db_service = DatabaseService()
+
+# Seed MongoDB if empty and we are running in MongoDB mode, or in memory
+if db_service.count() == 0:
+    print("[INFO] Database is empty. Seeding from local calls.json...")
+    if not os.path.exists(DATA_PATH):
+        raise FileNotFoundError(f"Primary dataset not found at {DATA_PATH}")
+    with open(DATA_PATH, "r") as f:
+        local_calls = json.load(f)
+    db_service.insert_many_calls(local_calls)
+
+# Load calls list
+CALLS = db_service.get_all_calls()
+print(f"[INFO] Loaded {len(CALLS)} call records from database.")
 
 analytics_service = AnalyticsService(CALLS)
 chat_service = ChatService(analytics_service=analytics_service)
+
+# Initialize vector store service for embedding live ingested calls
+try:
+    vector_store = VectorStoreService()
+except Exception as e:
+    print(f"[WARN] VectorStore init failed: {e}.")
+    vector_store = None
 
 # === WebSocket Manager ===
 class ConnectionManager:
@@ -54,30 +73,12 @@ class ConnectionManager:
 
 manager = ConnectionManager()
 
-# === Background Streaming Task ===
-async def generate_realtime_calls():
-    global CALLS
-    print("[INFO] Started real-time call streaming task (generating data every 10s)")
-    while True:
-        await asyncio.sleep(10)
-        num_new = random.randint(1, 3)
-        now = datetime.now()
-        new_calls = []
-        for _ in range(num_new):
-            new_call = generator.generate_call(len(CALLS) + 1, override_datetime=now)
-            new_calls.append(new_call)
-        
-        CALLS.extend(new_calls)
-        await manager.broadcast(json.dumps({"type": "NEW_CALLS", "count": num_new, "total": len(CALLS)}))
-        print(f"[STREAM] {num_new} new calls generated. Total is now {len(CALLS)}")
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Start the background task
-    task = asyncio.create_task(generate_realtime_calls())
+    # Startup: Database is already initialized
     yield
-    # Shutdown: Cancel the task
-    task.cancel()
+    # Shutdown
+
 
 app = FastAPI(title="Customer Interaction Insights API", version="1.0.0", lifespan=lifespan)
 
@@ -118,6 +119,77 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     response: str
     client_detected: Optional[str] = None
+
+class IngestRequest(BaseModel):
+    transcript: str
+    client: str
+    agent_name: Optional[str] = None
+    agent_id: Optional[str] = None
+
+
+def format_extraction_to_call(
+    extraction: CallExtraction,
+    call_id: str,
+    date_str: str,
+    time_str: str,
+    duration: int,
+    agent_id: str,
+    agent_name: str
+) -> dict:
+    # Scale empathy_score (0.0 - 1.0) to CSAT (1 - 5)
+    csat = int(round(extraction.agent_performance.empathy_score * 4)) + 1
+    
+    return {
+        "call_id": call_id,
+        "client": extraction.client,
+        "call_metadata": {
+            "date": date_str,
+            "time": time_str,
+            "duration_seconds": duration,
+            "agent_id": agent_id,
+            "agent_name": agent_name,
+            "channel": "inbound",
+            "queue": "customer_support",
+            "issue_resolved": extraction.issue_resolved
+        },
+        "transcript_summary": extraction.summary,
+        "nlp_analysis": {
+            "customer_intent": {
+                "primary_intent": extraction.topic,
+                "secondary_intent": "",
+                "confidence": 0.9
+            },
+            "root_cause": {
+                "detected_cause": extraction.root_cause.detected_cause,
+                "category": extraction.root_cause.category,
+                "confidence": extraction.root_cause.confidence_score
+            },
+            "escalation": {
+                "escalated": extraction.escalation.escalated,
+                "escalation_trigger": "",
+                "escalation_signals": extraction.escalation.escalation_signals,
+                "confidence": extraction.escalation.escalation_risk_score
+            },
+            "callback_intent": {
+                "callback_requested": False,
+                "reason": "",
+                "callback_type": "",
+                "confidence": 0.0
+            },
+            "customer_tone": {
+                "overall": extraction.customer_tone.overall,
+                "tone_progression": [extraction.customer_tone.overall],
+                "sentiment_score": extraction.customer_tone.sentiment_score
+            },
+            "call_summary": extraction.summary
+        },
+        "feedback": {
+            "post_call_survey_completed": True,
+            "csat_score": csat,
+            "customer_comment": "Automated QA feedback based on agent empathy and professionalism."
+        }
+    }
+
 
 
 # === Health Check (for Render / load balancer) ===
@@ -245,12 +317,74 @@ def get_sentiment(client: Optional[str] = None, start_date: Optional[str] = None
 @app.get("/api/analytics/agents")
 def get_agents(client: Optional[str] = None, start_date: Optional[str] = None, end_date: Optional[str] = None):
     return analytics_service.get_agents(client, start_date, end_date)
+@app.post("/api/ingest")
+async def ingest_transcript(req: IngestRequest):
+    # 1. Run through LangGraph Agentic Pipeline (5 specialist agents)
+    pipeline = create_agentic_pipeline()
+    result = pipeline.invoke({
+        "transcript_text": req.transcript,
+        "client": req.client,
+        "topic": "Customer Service Call"
+    })
+    
+    # Extract structural CallExtraction model
+    extraction = result.get("final_extraction")
+    if not extraction:
+        raise ValueError("Agentic extraction failed to yield a result.")
+    
+    # 2. Format into dashboard-compatible call record
+    agent_id = req.agent_id
+    agent_name = req.agent_name
+    if not agent_id or not agent_name:
+        agent_id, agent_name = random.choice(generator.AGENTS)
+        
+    call_seq = len(CALLS) + 1
+    client_code = "".join([w[0] for w in req.client.split()]).upper()
+    if not client_code:
+        client_code = "EXT"
+    date_now = datetime.now()
+    date_str = date_now.strftime("%Y-%m-%d")
+    time_str = date_now.strftime("%H:%M:%S")
+    call_id = f"{client_code}-{date_now.strftime('%Y')}-{call_seq:05d}"
+    
+    duration = random.randint(120, 600)
+    
+    call_record = format_extraction_to_call(
+        extraction=extraction,
+        call_id=call_id,
+        date_str=date_str,
+        time_str=time_str,
+        duration=duration,
+        agent_id=agent_id,
+        agent_name=agent_name
+    )
+    
+    # 3. Store in MongoDB database
+    db_service.insert_call(call_record)
+    
+    # 4. Embed in ChromaDB for RAG search
+    if vector_store and vector_store.embeddings:
+        try:
+            vector_store.embed_and_store(extraction, req.transcript)
+        except Exception as e:
+            print(f"[ERROR] Failed to embed call: {e}")
+            
+    # 5. Update in-memory state + broadcast via WebSocket
+    CALLS.append(call_record)
+    analytics_service.calls = CALLS
+    
+    await manager.broadcast(json.dumps({
+        "type": "NEW_CALLS", "count": 1, "total": len(CALLS)
+    }))
+    
+    return call_record
 
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
     response = await chat_service.chat(req.message, req.client)
     detected = chat_service._detect_client(req.message)
     return ChatResponse(response=response, client_detected=detected)
+
 
 
 if __name__ == "__main__":
